@@ -19,8 +19,10 @@ export const ExternalFiltering = () => {
   ];
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if(query.length > 1){
+      setLoading(true);
       const mockAPI = (query) => {
         const filteredResults = mockData.filter(m => m.label.toLowerCase().includes(query.toLowerCase()));
         return new Promise(resolve => setTimeout(() => resolve(filteredResults), 1000));
@@ -35,7 +37,7 @@ export const ExternalFiltering = () => {
     setQuery(event.detail.value);
   }
   return (
-    <IcSearchBar debounce={300} placeholder="Type to search" label="Search for coffee" onIcChange={handleChange} disableFilter options={results} />
+    <IcSearchBar loading={loading} timeout={1000} debounce={300} placeholder="Type to search" label="Search for coffee" onIcChange={handleChange} disableFilter options={results} />
   );
 };
 
