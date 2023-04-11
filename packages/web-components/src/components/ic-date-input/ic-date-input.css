@@ -1,0 +1,33 @@
+@import "../../global/normalize.css";
+
+.focus-indicator {
+  padding: var(--ic-space-xxxs) var(--ic-space-xs);
+  align-items: center;
+}
+
+input {
+  letter-spacing: 0.005rem;
+  border: 0;
+  height: 100%;
+  width: 2.287rem;
+  padding: 0;
+  outline: none;
+}
+
+.day-input {
+  width: 46.44px;
+}
+
+.month-input {
+  width: 57.56px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

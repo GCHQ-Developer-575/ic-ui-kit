@@ -10,6 +10,7 @@ import { IcButtonSizes, IcButtonTooltipPlacement, IcButtonTypes, IcButtonVariant
 import { IcChangeEventDetail } from "./components/ic-checkbox-group/ic-checkbox-group.types";
 import { IcChipAppearance, IcChipSizes } from "./components/ic-chip/ic-chip.types";
 import { IcProtectiveMarkings } from "./components/ic-classification-banner/ic-classification-banner.types";
+import { IcDateFormat } from "./components/ic-date-input/ic-date-input.types";
 import { IcFooterBreakpoints } from "./components/ic-footer/ic-footer.types";
 import { IcHeroContentAlignments } from "./components/ic-hero/ic-hero.types";
 import { IcAriaLiveModeVariants } from "./components/ic-input-validation/ic-input-validation.types";
@@ -359,6 +360,24 @@ export namespace Components {
           * The value of the middle (right if no end-component supplied) cell of the row.
          */
         "value": string;
+    }
+    interface IcDateInput {
+        /**
+          * The format in which the date will be displayed.
+         */
+        "dateDisplayFormat"?: IcDateFormat;
+        /**
+          * The helper text that will be displayed for additional field guidance. This will default to the `dateDisplayFormat` value.
+         */
+        "helperText"?: string;
+        /**
+          * The label for the date input.
+         */
+        "label": string;
+        /**
+          * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
+         */
+        "value"?: string;
     }
     interface IcDivider {
     }
@@ -1700,6 +1719,12 @@ declare global {
         prototype: HTMLIcDataRowElement;
         new (): HTMLIcDataRowElement;
     };
+    interface HTMLIcDateInputElement extends Components.IcDateInput, HTMLStencilElement {
+    }
+    var HTMLIcDateInputElement: {
+        prototype: HTMLIcDateInputElement;
+        new (): HTMLIcDateInputElement;
+    };
     interface HTMLIcDividerElement extends Components.IcDivider, HTMLStencilElement {
     }
     var HTMLIcDividerElement: {
@@ -1953,6 +1978,7 @@ declare global {
         "ic-classification-banner": HTMLIcClassificationBannerElement;
         "ic-data-entity": HTMLIcDataEntityElement;
         "ic-data-row": HTMLIcDataRowElement;
+        "ic-date-input": HTMLIcDateInputElement;
         "ic-divider": HTMLIcDividerElement;
         "ic-footer": HTMLIcFooterElement;
         "ic-footer-link": HTMLIcFooterLinkElement;
@@ -2342,6 +2368,24 @@ declare namespace LocalJSX {
         "small"?: boolean;
         /**
           * The value of the middle (right if no end-component supplied) cell of the row.
+         */
+        "value"?: string;
+    }
+    interface IcDateInput {
+        /**
+          * The format in which the date will be displayed.
+         */
+        "dateDisplayFormat"?: IcDateFormat;
+        /**
+          * The helper text that will be displayed for additional field guidance. This will default to the `dateDisplayFormat` value.
+         */
+        "helperText"?: string;
+        /**
+          * The label for the date input.
+         */
+        "label": string;
+        /**
+          * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
          */
         "value"?: string;
     }
@@ -3622,6 +3666,7 @@ declare namespace LocalJSX {
         "ic-classification-banner": IcClassificationBanner;
         "ic-data-entity": IcDataEntity;
         "ic-data-row": IcDataRow;
+        "ic-date-input": IcDateInput;
         "ic-divider": IcDivider;
         "ic-footer": IcFooter;
         "ic-footer-link": IcFooterLink;
@@ -3680,6 +3725,7 @@ declare module "@stencil/core" {
             "ic-classification-banner": LocalJSX.IcClassificationBanner & JSXBase.HTMLAttributes<HTMLIcClassificationBannerElement>;
             "ic-data-entity": LocalJSX.IcDataEntity & JSXBase.HTMLAttributes<HTMLIcDataEntityElement>;
             "ic-data-row": LocalJSX.IcDataRow & JSXBase.HTMLAttributes<HTMLIcDataRowElement>;
+            "ic-date-input": LocalJSX.IcDateInput & JSXBase.HTMLAttributes<HTMLIcDateInputElement>;
             "ic-divider": LocalJSX.IcDivider & JSXBase.HTMLAttributes<HTMLIcDividerElement>;
             "ic-footer": LocalJSX.IcFooter & JSXBase.HTMLAttributes<HTMLIcFooterElement>;
             "ic-footer-link": LocalJSX.IcFooterLink & JSXBase.HTMLAttributes<HTMLIcFooterLinkElement>;

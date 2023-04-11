@@ -1,0 +1,23 @@
+import { Meta, Story, Canvas, Description } from "@storybook/addon-docs";
+import { html } from "lit-html";
+import readme from "./readme.md";
+
+<Meta title="Web Components/Date input" component="ic-date-input" />
+
+<Description markdown={readme} />
+
+### Default
+
+<Canvas>
+  <Story name="Default">
+    {html`<ic-date-input
+      label="When would you like your coffee to be delivered?"
+    ></ic-date-input>
+    <script>
+      var dateInput = document.querySelector("ic-date-input");
+      {/* dateInput.addEventListener("icChange", function (event) {
+        console.log(event.detail.value);
+      }); */}
+    </script>`}
+  </Story>
+</Canvas>
