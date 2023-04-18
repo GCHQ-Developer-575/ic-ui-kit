@@ -58,17 +58,16 @@ export class DateInput {
   //  */
   // @Event() icChange: EventEmitter<IcValueEventDetail>;
 
-  // private handleKeyDown = (event: KeyboardEvent) => {
-  //   // Prevent characters other than numbers, '/' or '-' being entered
-  //   if (/[^0-9\/]/.test(event.key) && !(event.key === "Backspace")) {
-  //     event.preventDefault();
-  //     return;
-  //   }
-  // }
+  // Prevent non-number characters normally allowed in <input type="number"> (e.g. full stop)
+  private onlyAllowNumbers = (event: KeyboardEvent) => {
+    const key = event.key;
 
-  private handleDayBlur = (event: Event) => {
-    console.log(event);
+    if (key.length === 1 && !(key >= "0" && key <= "9")) {
+      event.preventDefault();
+    }
+  };
 
+  private handleDayBlur = () => {
     if (this.dayInputEl.value.length === 1) {
       if (+this.dayInputEl.value === 0) {
         this.dayInputEl.value = "01";
@@ -76,7 +75,7 @@ export class DateInput {
         this.dayInputEl.value = `0${this.dayInputEl.value}`;
       }
     }
-  }
+  };
 
   private handleDayInput = (event: InputEvent) => {
     const inputValue = this.dayInputEl.value;
@@ -86,68 +85,159 @@ export class DateInput {
         this.dayInputEl.value = `0${event.data}`;
         this.monthInputEl.focus();
       }
-  
+
       if (inputValue.length == 2) {
-        if (+this.dayInputEl.value === 0) {
+        if (+inputValue === 0) {
           this.dayInputEl.value = "01";
         }
         this.monthInputEl.focus();
       }
     }
-  }
+  };
+
+  private handleDayKeyDown = (event: KeyboardEvent) => {
+    if (
+      this.dayInputEl.value.length === 1 &&
+      (event.key === "/" || event.key === "-")
+    ) {
+      this.monthInputEl.focus();
+    }
+
+    this.onlyAllowNumbers(event);
+  };
+
+  private handleMonthBlur = () => {
+    if (this.monthInputEl.value.length === 1) {
+      if (+this.monthInputEl.value === 0) {
+        this.monthInputEl.value = "01";
+      } else {
+        this.monthInputEl.value = `0${this.monthInputEl.value}`;
+      }
+    }
+  };
+
+  private handleMonthInput = (event: InputEvent) => {
+    const inputValue = this.monthInputEl.value;
+
+    if (event.inputType !== "deleteContentBackward") {
+      if (inputValue.length === 1 && +inputValue >= 2 && +inputValue <= 9) {
+        this.monthInputEl.value = `0${event.data}`;
+        this.yearInputEl.focus();
+      }
+
+      if (inputValue.length == 2) {
+        if (+this.monthInputEl.value === 0) {
+          this.monthInputEl.value = "01";
+        }
+        this.yearInputEl.focus();
+      }
+    }
+  };
+
+  private handleMonthKeyDown = (event: KeyboardEvent) => {
+    if (
+      this.monthInputEl.value.length === 1 &&
+      (event.key === "/" || event.key === "-")
+    ) {
+      this.yearInputEl.focus();
+    }
+
+    this.onlyAllowNumbers(event);
+  };
+
+  private handleYearInput = () => {
+    if (this.yearInputEl.value.length > 4) {
+      this.yearInputEl.value = this.yearInputEl.value.slice(0, 4);
+    }
+  };
+
+  private handleYearBlur = () => {
+    if (this.yearInputEl.value.length === 1) {
+      this.yearInputEl.value = `200${this.yearInputEl.value}`;
+    } else if (this.yearInputEl.value.length === 2) {
+      this.yearInputEl.value = `20${this.yearInputEl.value}`;
+    }
+  };
+
+  private handleYearKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "/" || event.key === "-") {
+      if (this.yearInputEl.value.length === 1) {
+        this.yearInputEl.value = `200${this.yearInputEl.value}`;
+      } else if (this.yearInputEl.value.length === 2) {
+        this.yearInputEl.value = `20${this.yearInputEl.value}`;
+      }
+    }
+
+    this.onlyAllowNumbers(event);
+  };
 
   componentWillLoad() {
     if (!this.helperText) {
       this.helperText = this.dateDisplayFormat;
-    };
-
-    console.log(this.dayInputEl);
-    console.log(this.yearInputEl);
+    }
   }
-
-  // AUTOMATIC MOVING TO NEXT SECTION OF DATE IF FOLLOWING:
-  // 1st character of day is 4 - 9
-  // 1st character of month is 2 - 9
-
-  // type="date" - calendar is shown when you press space - DISABLE THIS (.showPicker()?)
 
   render() {
     const { label, helperText } = this;
 
     return (
-        <ic-input-container>
-          <ic-input-label
-            label={label}
-            helperText={helperText}
-          ></ic-input-label>
-          <ic-input-component-container>
-            <input class="day-input" ref={(el) => this.dayInputEl = el} type="number" placeholder="DD" min={1} max={31} onInput={this.handleDayInput} onBlur={this.handleDayBlur}></input>
-            /
-            <input class="month-input" ref={(el) => this.monthInputEl = el} type="number" placeholder="MM" min={1} max={12}></input>
-            /
-            <input class="year-input" ref={(el) => this.yearInputEl = el} type="number" placeholder="YYYY"></input>
-          </ic-input-component-container>
-        </ic-input-container>
+      <ic-input-container>
+        <ic-input-label label={label} helperText={helperText}></ic-input-label>
+        <ic-input-component-container>
+          <input
+            class="day-input"
+            ref={(el) => (this.dayInputEl = el)}
+            type="number"
+            placeholder="DD"
+            min={1}
+            max={31}
+            onInput={this.handleDayInput}
+            onBlur={this.handleDayBlur}
+            onKeyDown={this.handleDayKeyDown}
+          ></input>
+          /
+          <input
+            class="month-input"
+            ref={(el) => (this.monthInputEl = el)}
+            type="number"
+            placeholder="MM"
+            min={1}
+            max={12}
+            onInput={this.handleMonthInput}
+            onBlur={this.handleMonthBlur}
+            onKeyDown={this.handleMonthKeyDown}
+          ></input>
+          /
+          <input
+            class="year-input"
+            ref={(el) => (this.yearInputEl = el)}
+            type="number"
+            placeholder="YYYY"
+            min={0}
+            max={9999}
+            onInput={this.handleYearInput}
+            onBlur={this.handleYearBlur}
+            onKeyDown={this.handleYearKeyDown}
+          ></input>
+        </ic-input-component-container>
+      </ic-input-container>
     );
   }
 }
 
+// @State() valueIsoString: string = "";
 
+// @Watch("value")
+// watchValueHandler(): void {
+//   this.setIsoString();
+//   this.icChange.emit({ value: this.valueIsoString });
+// }
 
+// private handleInput = (event: CustomEvent) => {
+//   this.setIsoString(event.detail.value);
+//   // this.icChange.emit({ value: this.valueIsoString });
+// }
 
-  // @State() valueIsoString: string = "";
-
-  // @Watch("value")
-  // watchValueHandler(): void {
-  //   this.setIsoString();
-  //   this.icChange.emit({ value: this.valueIsoString });
-  // }
-
-  // private handleInput = (event: CustomEvent) => {
-  //   this.setIsoString(event.detail.value);
-  //   // this.icChange.emit({ value: this.valueIsoString });
-  // }
-
-  // private setIsoString = (value: string) => {
-  //   this.valueIsoString = value ? new Date(value).toISOString() : "";
-  // }
+// private setIsoString = (value: string) => {
+//   this.valueIsoString = value ? new Date(value).toISOString() : "";
+// }
