@@ -11,12 +11,12 @@ import { IcChangeEventDetail } from "./components/ic-checkbox-group/ic-checkbox-
 import { IcChipAppearance, IcChipSizes } from "./components/ic-chip/ic-chip.types";
 import { IcProtectiveMarkings } from "./components/ic-classification-banner/ic-classification-banner.types";
 import { IcDateFormat } from "./components/ic-date-input/ic-date-input.types";
+import { IcAutocompleteTypes as IcAutocompleteTypes1, IcAutocorrectStates as IcAutocorrectStates1, IcBlurEventDetail, IcInformationStatusOrEmpty as IcInformationStatusOrEmpty1, IcValueEventDetail } from "./interface";
 import { IcFooterBreakpoints } from "./components/ic-footer/ic-footer.types";
 import { IcHeroContentAlignments } from "./components/ic-hero/ic-hero.types";
 import { IcAriaLiveModeVariants } from "./components/ic-input-validation/ic-input-validation.types";
 import { IcLoadingSizes, IcLoadingTypes } from "./components/ic-loading-indicator/ic-loading-indicator.types";
 import { IcMenuChangeEventDetail, IcMenuOptionIdEventDetail, IcOptionSelectEventDetail } from "./components/ic-menu/ic-menu.types";
-import { IcAutocompleteTypes as IcAutocompleteTypes1, IcAutocorrectStates as IcAutocorrectStates1, IcBlurEventDetail, IcInformationStatusOrEmpty as IcInformationStatusOrEmpty1, IcValueEventDetail } from "./interface";
 import { IcSearchBarBlurEventDetail } from "./components/ic-search-bar/ic-search-bar.types";
 import { IcSkeletonVariants } from "./components/ic-skeleton/ic-skeleton.types";
 import { IcStatusTagAppearance, IcStatusTagStatuses } from "./components/ic-status-tag/ic-status-tag.types";
@@ -374,6 +374,14 @@ export namespace Components {
           * The label for the date input.
          */
         "label": string;
+        /**
+          * The validation state - e.g. 'error' | 'warning' | 'success'. This will override the built-in date validation.
+         */
+        "validationStatus": IcInformationStatusOrEmpty1;
+        /**
+          * The text to display as the validation message. This will override the built-in date validation.
+         */
+        "validationText": string;
         /**
           * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
          */
@@ -2384,6 +2392,14 @@ declare namespace LocalJSX {
           * The label for the date input.
          */
         "label": string;
+        /**
+          * The validation state - e.g. 'error' | 'warning' | 'success'. This will override the built-in date validation.
+         */
+        "validationStatus"?: IcInformationStatusOrEmpty1;
+        /**
+          * The text to display as the validation message. This will override the built-in date validation.
+         */
+        "validationText"?: string;
         /**
           * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
          */

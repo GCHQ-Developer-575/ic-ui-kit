@@ -10,6 +10,8 @@ import {
   // Watch,
 } from "@stencil/core";
 import { IcDateFormat } from "./ic-date-input.types";
+import { IcInformationStatusOrEmpty } from "../../interface";
+import { isEmptyString } from "../../utils/helpers";
 // import { IcValueEventDetail } from "../../interface";
 
 @Component({
@@ -49,14 +51,27 @@ export class DateInput {
    */
   @Prop() dateDisplayFormat?: IcDateFormat = "DD/MM/YYYY";
 
+  /**
+   * The validation state - e.g. 'error' | 'warning' | 'success'. This will override the built-in date validation.
+   */
+  @Prop({ mutable: true }) validationStatus: IcInformationStatusOrEmpty = "";
+
+  /**
+   * The text to display as the validation message. This will override the built-in date validation.
+   */
+  @Prop({ mutable: true }) validationText: string = "";
+
   @State() day: string;
   @State() month: string;
   @State() year: string;
+  // @State() isValidDate: boolean = true;
 
   // /**
   //  * Emitted when the value has changed. The emitted value is in ISO 8601 date string format (`yyyy-mm-dd`).
   //  */
   // @Event() icChange: EventEmitter<IcValueEventDetail>;
+
+  // FUNCTIONALITY FOR PASTING DATE INTO DATE INPUT?
 
   // Prevent non-number characters normally allowed in <input type="number"> (e.g. full stop)
   private onlyAllowNumbers = (event: KeyboardEvent) => {
@@ -78,19 +93,23 @@ export class DateInput {
   };
 
   private handleDayInput = (event: InputEvent) => {
-    const inputValue = this.dayInputEl.value;
-
     if (event.inputType !== "deleteContentBackward") {
-      if (inputValue.length === 1 && +inputValue >= 4 && +inputValue <= 9) {
+      if (
+        this.dayInputEl.value.length === 1 &&
+        +this.dayInputEl.value >= 4 &&
+        +this.dayInputEl.value <= 9
+      ) {
         this.dayInputEl.value = `0${event.data}`;
         this.monthInputEl.focus();
+        this.day = this.dayInputEl.value;
       }
 
-      if (inputValue.length == 2) {
-        if (+inputValue === 0) {
+      if (this.dayInputEl.value.length === 2) {
+        if (+this.dayInputEl.value === 0) {
           this.dayInputEl.value = "01";
         }
         this.monthInputEl.focus();
+        this.day = this.dayInputEl.value;
       }
     }
   };
@@ -123,6 +142,7 @@ export class DateInput {
       if (inputValue.length === 1 && +inputValue >= 2 && +inputValue <= 9) {
         this.monthInputEl.value = `0${event.data}`;
         this.yearInputEl.focus();
+        this.month = this.monthInputEl.value;
       }
 
       if (inputValue.length == 2) {
@@ -130,6 +150,7 @@ export class DateInput {
           this.monthInputEl.value = "01";
         }
         this.yearInputEl.focus();
+        this.month = this.monthInputEl.value;
       }
     }
   };
@@ -156,7 +177,11 @@ export class DateInput {
       this.yearInputEl.value = `200${this.yearInputEl.value}`;
     } else if (this.yearInputEl.value.length === 2) {
       this.yearInputEl.value = `20${this.yearInputEl.value}`;
+    } else if (this.yearInputEl.value.length === 3) {
+      this.yearInputEl.value = `2${this.yearInputEl.value}`;
     }
+
+    this.year = this.yearInputEl.value;
   };
 
   private handleYearKeyDown = (event: KeyboardEvent) => {
@@ -165,7 +190,10 @@ export class DateInput {
         this.yearInputEl.value = `200${this.yearInputEl.value}`;
       } else if (this.yearInputEl.value.length === 2) {
         this.yearInputEl.value = `20${this.yearInputEl.value}`;
+      } else if (this.yearInputEl.value.length === 3) {
+        this.yearInputEl.value = `2${this.yearInputEl.value}`;
       }
+      this.year = this.yearInputEl.value;
     }
 
     this.onlyAllowNumbers(event);
@@ -175,6 +203,17 @@ export class DateInput {
     if (!this.helperText) {
       this.helperText = this.dateDisplayFormat;
     }
+  }
+
+  componentWillUpdate() {
+    if (+this.day > 31 || +this.month > 12) {
+      this.validationStatus = "error";
+      this.validationText = "Please enter a valid date.";
+    }
+
+    // if (this.day && this.month && this.year) {
+    //   const dateString = `${this.year}-${this.month}-${this.day}`;
+    // }
   }
 
   render() {
@@ -187,6 +226,7 @@ export class DateInput {
           <input
             class="day-input"
             ref={(el) => (this.dayInputEl = el)}
+            title=""
             type="number"
             placeholder="DD"
             min={1}
@@ -199,6 +239,7 @@ export class DateInput {
           <input
             class="month-input"
             ref={(el) => (this.monthInputEl = el)}
+            title=""
             type="number"
             placeholder="MM"
             min={1}
@@ -211,6 +252,7 @@ export class DateInput {
           <input
             class="year-input"
             ref={(el) => (this.yearInputEl = el)}
+            title=""
             type="number"
             placeholder="YYYY"
             min={0}
@@ -220,6 +262,15 @@ export class DateInput {
             onKeyDown={this.handleYearKeyDown}
           ></input>
         </ic-input-component-container>
+        {(!isEmptyString(this.validationStatus) ||
+          !isEmptyString(this.validationText)) && (
+          <ic-input-validation
+            status={this.validationStatus}
+            message={this.validationText}
+            // ariaLiveMode={messageAriaLive}
+            // for={inputId}
+          ></ic-input-validation>
+        )}
       </ic-input-container>
     );
   }
