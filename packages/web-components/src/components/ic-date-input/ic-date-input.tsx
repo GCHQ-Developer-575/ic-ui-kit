@@ -29,6 +29,10 @@ export class DateInput {
   private monthInputEl: HTMLInputElement;
   private yearInputEl: HTMLInputElement;
 
+  private preventDayInput: boolean;
+  private preventMonthInput: boolean;
+  private preventYearInput: boolean;
+
   // private inputEl: HTMLIcTextFieldElement;
 
   /**
@@ -110,11 +114,26 @@ export class DateInput {
         }
         this.monthInputEl.focus();
         this.day = this.dayInputEl.value;
+        this.preventDayInput = true;
+      } else {
+        this.preventDayInput = false;
       }
+    }
+
+    if (this.dayInputEl.value.length === 2) {
+      this.preventDayInput = true;
+    } else {
+      this.preventDayInput = false;
     }
   };
 
   private handleDayKeyDown = (event: KeyboardEvent) => {
+    // CHANGE TO ALLOW PASTING WITH SAME NUMBER OF CHARACTERS E.G. REPLACING "03" WITH "12"
+    // Prevent over 2 characters (but allow replacement of characters by highlighting)
+    if (event.key >= "0" && event.key <= "9" && this.preventDayInput && !window.getSelection().toString()) {
+      event.preventDefault();
+    }
+
     if (
       this.dayInputEl.value.length === 1 &&
       (event.key === "/" || event.key === "-")
@@ -136,26 +155,40 @@ export class DateInput {
   };
 
   private handleMonthInput = (event: InputEvent) => {
-    const inputValue = this.monthInputEl.value;
-
     if (event.inputType !== "deleteContentBackward") {
-      if (inputValue.length === 1 && +inputValue >= 2 && +inputValue <= 9) {
+      if (this.monthInputEl.value.length === 1 && +this.monthInputEl.value >= 2 && +this.monthInputEl.value <= 9) {
         this.monthInputEl.value = `0${event.data}`;
         this.yearInputEl.focus();
         this.month = this.monthInputEl.value;
       }
 
-      if (inputValue.length == 2) {
+      if (this.monthInputEl.value.length === 2) {
         if (+this.monthInputEl.value === 0) {
           this.monthInputEl.value = "01";
         }
         this.yearInputEl.focus();
         this.month = this.monthInputEl.value;
+        this.preventMonthInput = true;
+      } else {
+        this.preventMonthInput = false;
       }
     }
+
+    if (this.monthInputEl.value.length === 2) {
+      this.preventMonthInput = true;
+    } else {
+      this.preventMonthInput = false;
+    }
+  
   };
 
   private handleMonthKeyDown = (event: KeyboardEvent) => {
+    // CHANGE TO ALLOW PASTING WITH SAME NUMBER OF CHARACTERS E.G. REPLACING "03" WITH "12"
+    // Prevent over 2 characters (but allow replacement of characters by highlighting)
+    if (event.key >= "0" && event.key <= "9" && this.preventMonthInput && !window.getSelection().toString()) {
+      event.preventDefault();
+    }
+
     if (
       this.monthInputEl.value.length === 1 &&
       (event.key === "/" || event.key === "-")
@@ -167,8 +200,10 @@ export class DateInput {
   };
 
   private handleYearInput = () => {
-    if (this.yearInputEl.value.length > 4) {
-      this.yearInputEl.value = this.yearInputEl.value.slice(0, 4);
+    if (this.yearInputEl.value.length === 4) {
+      this.preventYearInput = true;
+    } else {
+      this.preventYearInput = false;
     }
   };
 
@@ -185,6 +220,12 @@ export class DateInput {
   };
 
   private handleYearKeyDown = (event: KeyboardEvent) => {
+    // CHANGE TO ALLOW PASTING WITH SAME NUMBER OF CHARACTERS E.G. REPLACING "03" WITH "12"
+    // Prevent over 4 characters (but allow replacement of characters by highlighting)
+    if (event.key >= "0" && event.key <= "9" && this.preventYearInput && !window.getSelection().toString()) {
+      event.preventDefault();
+    }
+
     if (event.key === "/" || event.key === "-") {
       if (this.yearInputEl.value.length === 1) {
         this.yearInputEl.value = `200${this.yearInputEl.value}`;

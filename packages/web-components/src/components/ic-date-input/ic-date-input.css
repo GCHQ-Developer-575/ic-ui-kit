@@ -6,20 +6,22 @@
 }
 
 input {
-  letter-spacing: 0.005rem;
   border: 0;
   height: 100%;
-  width: 2.287rem;
   padding: 0;
   outline: none;
 }
 
 .day-input {
-  width: 46.44px;
+  width: 23px;
+}
+
+.day-input.has-value {
+  width: 20px;
 }
 
 .month-input {
-  width: 57.56px;
+  width: 29px;
 }
 
 input::-webkit-outer-spin-button,
