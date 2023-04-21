@@ -33,8 +33,6 @@ export class DateInput {
   private preventMonthInput: boolean;
   private preventYearInput: boolean;
 
-  // private inputEl: HTMLIcTextFieldElement;
-
   /**
    * The label for the date input.
    */
@@ -68,7 +66,6 @@ export class DateInput {
   @State() day: string;
   @State() month: string;
   @State() year: string;
-  // @State() isValidDate: boolean = true;
 
   // /**
   //  * Emitted when the value has changed. The emitted value is in ISO 8601 date string format (`yyyy-mm-dd`).
@@ -86,17 +83,8 @@ export class DateInput {
     }
   };
 
-  private handleDayBlur = () => {
-    if (this.dayInputEl.value.length === 1) {
-      if (+this.dayInputEl.value === 0) {
-        this.dayInputEl.value = "01";
-      } else {
-        this.dayInputEl.value = `0${this.dayInputEl.value}`;
-      }
-    }
-  };
-
   private handleDayInput = (event: InputEvent) => {
+    // Prevent auto-formatting each time a character is deleted
     if (event.inputType !== "deleteContentBackward") {
       if (
         this.dayInputEl.value.length === 1 &&
@@ -115,15 +103,18 @@ export class DateInput {
         this.monthInputEl.focus();
         this.day = this.dayInputEl.value;
         this.preventDayInput = true;
-      } else {
-        this.preventDayInput = false;
-      }
+      } 
+      // else {
+      //   this.day = null;
+      //   this.preventDayInput = false;
+      // }
     }
 
     if (this.dayInputEl.value.length === 2) {
       this.preventDayInput = true;
     } else {
       this.preventDayInput = false;
+      this.day = null;
     }
   };
 
@@ -144,17 +135,22 @@ export class DateInput {
     this.onlyAllowNumbers(event);
   };
 
-  private handleMonthBlur = () => {
-    if (this.monthInputEl.value.length === 1) {
-      if (+this.monthInputEl.value === 0) {
-        this.monthInputEl.value = "01";
+  private handleDayFocus = () => {
+    this.dayInputEl.select();
+  }
+
+  private handleDayBlur = () => {
+    if (this.dayInputEl.value.length === 1) {
+      if (+this.dayInputEl.value === 0) {
+        this.dayInputEl.value = "01";
       } else {
-        this.monthInputEl.value = `0${this.monthInputEl.value}`;
+        this.dayInputEl.value = `0${this.dayInputEl.value}`;
       }
     }
   };
 
   private handleMonthInput = (event: InputEvent) => {
+    // Prevent auto-formatting each time a character is deleted
     if (event.inputType !== "deleteContentBackward") {
       if (this.monthInputEl.value.length === 1 && +this.monthInputEl.value >= 2 && +this.monthInputEl.value <= 9) {
         this.monthInputEl.value = `0${event.data}`;
@@ -169,17 +165,19 @@ export class DateInput {
         this.yearInputEl.focus();
         this.month = this.monthInputEl.value;
         this.preventMonthInput = true;
-      } else {
-        this.preventMonthInput = false;
-      }
+      } 
+      // else {
+      //   this.month = null;
+      //   this.preventMonthInput = false;
+      // }
     }
 
     if (this.monthInputEl.value.length === 2) {
       this.preventMonthInput = true;
     } else {
       this.preventMonthInput = false;
+      this.month = null;
     }
-  
   };
 
   private handleMonthKeyDown = (event: KeyboardEvent) => {
@@ -199,24 +197,28 @@ export class DateInput {
     this.onlyAllowNumbers(event);
   };
 
-  private handleYearInput = () => {
-    if (this.yearInputEl.value.length === 4) {
-      this.preventYearInput = true;
-    } else {
-      this.preventYearInput = false;
+  private handleMonthFocus = () => {
+    this.monthInputEl.select();
+  }
+
+  private handleMonthBlur = () => {
+    if (this.monthInputEl.value.length === 1) {
+      if (+this.monthInputEl.value === 0) {
+        this.monthInputEl.value = "01";
+      } else {
+        this.monthInputEl.value = `0${this.monthInputEl.value}`;
+      }
     }
   };
 
-  private handleYearBlur = () => {
-    if (this.yearInputEl.value.length === 1) {
-      this.yearInputEl.value = `200${this.yearInputEl.value}`;
-    } else if (this.yearInputEl.value.length === 2) {
-      this.yearInputEl.value = `20${this.yearInputEl.value}`;
-    } else if (this.yearInputEl.value.length === 3) {
-      this.yearInputEl.value = `2${this.yearInputEl.value}`;
+  private handleYearInput = () => {
+    if (this.yearInputEl.value.length === 4) {
+      this.year = this.yearInputEl.value;
+      this.preventYearInput = true;
+    } else {
+      this.year = null;
+      this.preventYearInput = false;
     }
-
-    this.year = this.yearInputEl.value;
   };
 
   private handleYearKeyDown = (event: KeyboardEvent) => {
@@ -234,11 +236,64 @@ export class DateInput {
       } else if (this.yearInputEl.value.length === 3) {
         this.yearInputEl.value = `2${this.yearInputEl.value}`;
       }
-      this.year = this.yearInputEl.value;
     }
 
     this.onlyAllowNumbers(event);
   };
+
+  private handleYearBlur = () => {
+    if (this.yearInputEl.value.length === 1) {
+      this.yearInputEl.value = `200${this.yearInputEl.value}`;
+    } else if (this.yearInputEl.value.length === 2) {
+      this.yearInputEl.value = `20${this.yearInputEl.value}`;
+    } else if (this.yearInputEl.value.length === 3) {
+      this.yearInputEl.value = `2${this.yearInputEl.value}`;
+    }
+
+    this.year = this.yearInputEl.value;
+  };
+
+  private handleYearFocus = () => {
+    this.yearInputEl.select();
+  };
+
+  private setValidationMessage = () => {
+    const validationStatus = "error";
+    const validationText = "Please enter a valid date.";
+
+    let isValidDay = true;
+    let isValidMonth = true;
+    let isValidDate = true;
+
+    if (this.day) {
+      if (+this.day > 31) {
+        isValidDay = false;
+      }
+    } else {
+      isValidDay = true;
+    }
+
+    if (this.month) {
+      if (+this.month > 12) {
+        isValidMonth = false;
+      }
+    } else {
+      isValidMonth = true;
+    }
+
+    if (this.day && this.month && this.year) {
+      const date = new Date(+this.year, +this.month - 1, +this.day)
+      isValidDate = Boolean(+date) && date.getDate() == +this.day;
+    }
+
+    if (!(isValidDay && isValidMonth && isValidDate)) {
+      this.validationStatus = validationStatus;
+      this.validationText = validationText;
+    } else {
+      this.validationStatus = null;
+      this.validationText = null;
+    }
+  }
 
   componentWillLoad() {
     if (!this.helperText) {
@@ -247,14 +302,7 @@ export class DateInput {
   }
 
   componentWillUpdate() {
-    if (+this.day > 31 || +this.month > 12) {
-      this.validationStatus = "error";
-      this.validationText = "Please enter a valid date.";
-    }
-
-    // if (this.day && this.month && this.year) {
-    //   const dateString = `${this.year}-${this.month}-${this.day}`;
-    // }
+    this.setValidationMessage();
   }
 
   render() {
@@ -273,8 +321,9 @@ export class DateInput {
             min={1}
             max={31}
             onInput={this.handleDayInput}
-            onBlur={this.handleDayBlur}
             onKeyDown={this.handleDayKeyDown}
+            onFocus={this.handleDayFocus}
+            onBlur={this.handleDayBlur}
           ></input>
           /
           <input
@@ -286,8 +335,9 @@ export class DateInput {
             min={1}
             max={12}
             onInput={this.handleMonthInput}
-            onBlur={this.handleMonthBlur}
             onKeyDown={this.handleMonthKeyDown}
+            onFocus={this.handleMonthFocus}
+            onBlur={this.handleMonthBlur}
           ></input>
           /
           <input
@@ -299,8 +349,9 @@ export class DateInput {
             min={0}
             max={9999}
             onInput={this.handleYearInput}
-            onBlur={this.handleYearBlur}
             onKeyDown={this.handleYearKeyDown}
+            onFocus={this.handleYearFocus}
+            onBlur={this.handleYearBlur}
           ></input>
         </ic-input-component-container>
         {(!isEmptyString(this.validationStatus) ||
