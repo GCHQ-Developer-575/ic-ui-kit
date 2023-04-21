@@ -9,7 +9,7 @@ import {
   // State,
   // Watch,
 } from "@stencil/core";
-import { IcDateFormat } from "./ic-date-input.types";
+import { IcDateFormat, IcDisabledDateTypes } from "./ic-date-input.types";
 import { IcInformationStatusOrEmpty } from "../../interface";
 import { isEmptyString } from "../../utils/helpers";
 // import { IcValueEventDetail } from "../../interface";
@@ -33,13 +33,15 @@ export class DateInput {
   private preventMonthInput: boolean;
   private preventYearInput: boolean;
 
+  private selectedDate: Date;
+
   /**
    * The label for the date input.
    */
   @Prop() label!: string;
 
   /**
-   * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
+   * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). // OR DATE OBJECT
    */
   @Prop() value?: string = "";
 
@@ -56,12 +58,14 @@ export class DateInput {
   /**
    * The validation state - e.g. 'error' | 'warning' | 'success'. This will override the built-in date validation.
    */
-  @Prop({ mutable: true }) validationStatus: IcInformationStatusOrEmpty = "";
+  @Prop({ mutable: true }) validationStatus?: IcInformationStatusOrEmpty = "";
 
   /**
    * The text to display as the validation message. This will override the built-in date validation.
    */
-  @Prop({ mutable: true }) validationText: string = "";
+  @Prop({ mutable: true }) validationText?: string = "";
+
+  @Prop() disabledDates?: IcDisabledDateTypes;
 
   @State() day: string;
   @State() month: string;
@@ -103,7 +107,7 @@ export class DateInput {
         this.monthInputEl.focus();
         this.day = this.dayInputEl.value;
         this.preventDayInput = true;
-      } 
+      }
       // else {
       //   this.day = null;
       //   this.preventDayInput = false;
@@ -121,7 +125,12 @@ export class DateInput {
   private handleDayKeyDown = (event: KeyboardEvent) => {
     // CHANGE TO ALLOW PASTING WITH SAME NUMBER OF CHARACTERS E.G. REPLACING "03" WITH "12"
     // Prevent over 2 characters (but allow replacement of characters by highlighting)
-    if (event.key >= "0" && event.key <= "9" && this.preventDayInput && !window.getSelection().toString()) {
+    if (
+      event.key >= "0" &&
+      event.key <= "9" &&
+      this.preventDayInput &&
+      !window.getSelection().toString()
+    ) {
       event.preventDefault();
     }
 
@@ -137,7 +146,7 @@ export class DateInput {
 
   private handleDayFocus = () => {
     this.dayInputEl.select();
-  }
+  };
 
   private handleDayBlur = () => {
     if (this.dayInputEl.value.length === 1) {
@@ -152,7 +161,11 @@ export class DateInput {
   private handleMonthInput = (event: InputEvent) => {
     // Prevent auto-formatting each time a character is deleted
     if (event.inputType !== "deleteContentBackward") {
-      if (this.monthInputEl.value.length === 1 && +this.monthInputEl.value >= 2 && +this.monthInputEl.value <= 9) {
+      if (
+        this.monthInputEl.value.length === 1 &&
+        +this.monthInputEl.value >= 2 &&
+        +this.monthInputEl.value <= 9
+      ) {
         this.monthInputEl.value = `0${event.data}`;
         this.yearInputEl.focus();
         this.month = this.monthInputEl.value;
@@ -165,7 +178,7 @@ export class DateInput {
         this.yearInputEl.focus();
         this.month = this.monthInputEl.value;
         this.preventMonthInput = true;
-      } 
+      }
       // else {
       //   this.month = null;
       //   this.preventMonthInput = false;
@@ -183,7 +196,12 @@ export class DateInput {
   private handleMonthKeyDown = (event: KeyboardEvent) => {
     // CHANGE TO ALLOW PASTING WITH SAME NUMBER OF CHARACTERS E.G. REPLACING "03" WITH "12"
     // Prevent over 2 characters (but allow replacement of characters by highlighting)
-    if (event.key >= "0" && event.key <= "9" && this.preventMonthInput && !window.getSelection().toString()) {
+    if (
+      event.key >= "0" &&
+      event.key <= "9" &&
+      this.preventMonthInput &&
+      !window.getSelection().toString()
+    ) {
       event.preventDefault();
     }
 
@@ -199,7 +217,7 @@ export class DateInput {
 
   private handleMonthFocus = () => {
     this.monthInputEl.select();
-  }
+  };
 
   private handleMonthBlur = () => {
     if (this.monthInputEl.value.length === 1) {
@@ -224,7 +242,12 @@ export class DateInput {
   private handleYearKeyDown = (event: KeyboardEvent) => {
     // CHANGE TO ALLOW PASTING WITH SAME NUMBER OF CHARACTERS E.G. REPLACING "03" WITH "12"
     // Prevent over 4 characters (but allow replacement of characters by highlighting)
-    if (event.key >= "0" && event.key <= "9" && this.preventYearInput && !window.getSelection().toString()) {
+    if (
+      event.key >= "0" &&
+      event.key <= "9" &&
+      this.preventYearInput &&
+      !window.getSelection().toString()
+    ) {
       event.preventDefault();
     }
 
@@ -257,13 +280,33 @@ export class DateInput {
     this.yearInputEl.select();
   };
 
+  private isSelectedDateDisabled = () => {
+    const currentDate = new Date();
+
+    let disabled = false;
+
+    if (this.disabledDates) {
+      if (
+        ((this.disabledDates === "until-now" &&
+          this.selectedDate < currentDate) ||
+          (this.disabledDates === "from-now" &&
+            this.selectedDate > currentDate)) &&
+        this.selectedDate.getDate() !== currentDate.getDate()
+      ) {
+        disabled = true;
+      }
+    }
+
+    return disabled;
+  };
+
   private setValidationMessage = () => {
     const validationStatus = "error";
-    const validationText = "Please enter a valid date.";
 
     let isValidDay = true;
     let isValidMonth = true;
     let isValidDate = true;
+    let isDisabledDate = false;
 
     if (this.day) {
       if (+this.day > 31) {
@@ -282,18 +325,29 @@ export class DateInput {
     }
 
     if (this.day && this.month && this.year) {
-      const date = new Date(+this.year, +this.month - 1, +this.day)
-      isValidDate = Boolean(+date) && date.getDate() == +this.day;
+      this.selectedDate = new Date(+this.year, +this.month - 1, +this.day);
+      isValidDate =
+        !!+this.selectedDate && this.selectedDate.getDate() == +this.day;
+      isDisabledDate = this.isSelectedDateDisabled();
     }
 
     if (!(isValidDay && isValidMonth && isValidDate)) {
       this.validationStatus = validationStatus;
-      this.validationText = validationText;
+      this.validationText = "Please enter a valid date.";
+    } else if (isDisabledDate) {
+      this.validationStatus = validationStatus;
+      if (this.disabledDates === "until-now") {
+        this.validationText =
+          "Dates in the past are not allowed. Please select a date in the future.";
+      } else {
+        this.validationText =
+          "Dates in the future are not allowed. Please select a date in the past.";
+      }
     } else {
-      this.validationStatus = null;
-      this.validationText = null;
+      this.validationStatus = "";
+      this.validationText = "";
     }
-  }
+  };
 
   componentWillLoad() {
     if (!this.helperText) {

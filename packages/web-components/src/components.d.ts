@@ -10,7 +10,7 @@ import { IcButtonSizes, IcButtonTooltipPlacement, IcButtonTypes, IcButtonVariant
 import { IcChangeEventDetail } from "./components/ic-checkbox-group/ic-checkbox-group.types";
 import { IcChipAppearance, IcChipSizes } from "./components/ic-chip/ic-chip.types";
 import { IcProtectiveMarkings } from "./components/ic-classification-banner/ic-classification-banner.types";
-import { IcDateFormat } from "./components/ic-date-input/ic-date-input.types";
+import { IcDateFormat, IcDisabledDateTypes } from "./components/ic-date-input/ic-date-input.types";
 import { IcAutocompleteTypes as IcAutocompleteTypes1, IcAutocorrectStates as IcAutocorrectStates1, IcBlurEventDetail, IcInformationStatusOrEmpty as IcInformationStatusOrEmpty1, IcValueEventDetail } from "./interface";
 import { IcFooterBreakpoints } from "./components/ic-footer/ic-footer.types";
 import { IcHeroContentAlignments } from "./components/ic-hero/ic-hero.types";
@@ -366,6 +366,7 @@ export namespace Components {
           * The format in which the date will be displayed.
          */
         "dateDisplayFormat"?: IcDateFormat;
+        "disabledDates"?: IcDisabledDateTypes;
         /**
           * The helper text that will be displayed for additional field guidance. This will default to the `dateDisplayFormat` value.
          */
@@ -377,13 +378,13 @@ export namespace Components {
         /**
           * The validation state - e.g. 'error' | 'warning' | 'success'. This will override the built-in date validation.
          */
-        "validationStatus": IcInformationStatusOrEmpty1;
+        "validationStatus"?: IcInformationStatusOrEmpty1;
         /**
           * The text to display as the validation message. This will override the built-in date validation.
          */
-        "validationText": string;
+        "validationText"?: string;
         /**
-          * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
+          * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). // OR DATE OBJECT
          */
         "value"?: string;
     }
@@ -2384,6 +2385,7 @@ declare namespace LocalJSX {
           * The format in which the date will be displayed.
          */
         "dateDisplayFormat"?: IcDateFormat;
+        "disabledDates"?: IcDisabledDateTypes;
         /**
           * The helper text that will be displayed for additional field guidance. This will default to the `dateDisplayFormat` value.
          */
@@ -2401,7 +2403,7 @@ declare namespace LocalJSX {
          */
         "validationText"?: string;
         /**
-          * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). OR DATE OBJECT
+          * The value of the date input - in ISO 8601 date string format (`yyyy-mm-dd`). // OR DATE OBJECT
          */
         "value"?: string;
     }
