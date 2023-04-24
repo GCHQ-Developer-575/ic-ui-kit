@@ -205,6 +205,8 @@ export class Select {
 
   @State() pressedCharacters: string = "";
 
+  @State() hiddenInputValue: string;
+
   @Watch("options")
   watchOptionsHandler(): void {
     if (this.isExternalFiltering()) {
@@ -244,6 +246,11 @@ export class Select {
   valueChangedHandler() {
     if (this.value !== this.currValue) {
       this.currValue = this.value;
+    }
+
+    if (this.searchable && !!this.currValue) {
+      this.searchableSelectInputValue =
+        this.getLabelFromValue(this.currValue) || this.currValue;
     }
   }
 
@@ -301,7 +308,10 @@ export class Select {
   }
 
   private emitIcChange = (value: string) => {
-    this.value = value;
+    if (!this.searchable) {
+      this.value = value;
+    }
+
     clearTimeout(this.debounceIcChange);
     this.debounceIcChange = window.setTimeout(() => {
       this.icChange.emit({ value: value });
@@ -353,11 +363,6 @@ export class Select {
     return getLabelFromValue(value, this.options);
   };
 
-  private getValueFromLabel = (label: string): string | undefined => {
-    const value = this.options.find((option) => option.label === label)?.value;
-    return value;
-  };
-
   private getFilteredChildMenuOptions = (option: IcMenuOption) => {
     let children = option.children;
 
@@ -397,6 +402,9 @@ export class Select {
     if (this.searchable) {
       this.searchableSelectInputValue = this.getLabelFromValue(
         event.detail.value
+      );
+      this.hiddenInputValue = this.getValueFromLabel(
+        this.searchableSelectInputValue
       );
     }
 
@@ -469,6 +477,7 @@ export class Select {
     if (this.searchable) {
       this.searchableSelectElement.value = null;
       this.searchableSelectInputValue = null;
+      this.hiddenInputValue = null;
       this.menu.options = this.options;
       this.searchableSelectElement.focus();
 
@@ -608,17 +617,17 @@ export class Select {
     }
   };
 
+  private getValueFromLabel = (label: string): string | undefined => {
+    const value = this.options.find((option) => option.label === label)?.value;
+    return value;
+  };
+
   private handleSearchableSelectInput = (event: Event): void => {
     this.searchableSelectInputValue = (event.target as HTMLInputElement).value;
     this.icInput.emit({ value: this.searchableSelectInputValue });
+    this.emitIcChange(this.searchableSelectInputValue);
 
-    if (this.disableFilter) {
-      this.emitIcChange(this.searchableSelectInputValue);
-    } else if (
-      this.getValueFromLabel(this.searchableSelectInputValue) === undefined
-    ) {
-      this.emitIcChange(null);
-    }
+    this.hiddenInputValue = this.searchableSelectInputValue;
 
     if (this.isMenuEnabled()) {
       this.setMenuChange(true);
@@ -708,7 +717,7 @@ export class Select {
 
     if (!this.options.length) {
       this.initialOptionsEmpty = true;
-    } else if (!this.disableFilter) {
+    } else {
       this.setDefaultValue();
     }
   }
@@ -755,7 +764,9 @@ export class Select {
       currValue,
     } = this;
 
-    renderHiddenInput(true, this.host, name, currValue, disabled);
+    const inputValue = this.searchable ? this.hiddenInputValue : currValue;
+
+    renderHiddenInput(true, this.host, name, inputValue, disabled);
 
     const invalid =
       validationStatus === IcInformationStatus.Error ? "true" : "false";
@@ -774,6 +785,7 @@ export class Select {
           small: small,
           "full-width": fullWidth,
         }}
+        onBlur={this.onBlur}
       >
         <ic-input-container readonly={readonly}>
           {!hideLabel && (
@@ -1008,6 +1020,7 @@ export class Select {
               onMenuKeyPress={this.handleMenuKeyPress}
               onUngroupedOptionsSet={this.setUngroupedOptions}
               parentEl={this.host}
+              activationType={this.searchable ? "manual" : "automatic"}
             ></ic-menu>
           )}
           {hasValidationStatus(this.validationStatus, this.disabled) && (

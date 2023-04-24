@@ -141,10 +141,11 @@ export class Menu {
   private menu: HTMLUListElement;
   private ungroupedOptions: IcMenuOption[] = [];
   private popperInstance: PopperInstance;
+  private isSearchBar: boolean = false;
+  private isSearchableSelect: boolean = false;
 
   // Prevents menu re-opening immediately after it is closed on blur when clicking input
   private preventClickOpen: boolean = false;
-  private isSearchBar: boolean = false;
 
   private handleMenuChange = (open: boolean, focusInput?: boolean): void => {
     if (!open) this.popperInstance.destroy();
@@ -227,6 +228,17 @@ export class Menu {
     this.setHighlightedOption(0);
   }
 
+  private getParentEl = (parent: HTMLElement) => {
+    if (parent.tagName === "IC-SEARCH-BAR") {
+      this.isSearchBar = true;
+    } else if (
+      parent.tagName === "IC-SELECT" &&
+      !!parent?.getAttribute("searchable")
+    ) {
+      this.isSearchableSelect = true;
+    }
+  };
+
   private arrowBehaviour = (event: KeyboardEvent): void => {
     event.preventDefault();
     this.handleMenuChange(true);
@@ -242,8 +254,6 @@ export class Menu {
     );
 
     this.keyboardNav = false;
-
-    const isSearchableSelect = this.inputEl?.tagName === "INPUT";
 
     switch (event.key) {
       case "ArrowDown":
@@ -262,16 +272,16 @@ export class Menu {
           this.handleMenuChange(true);
         }
         break;
-      case "Backspace":
-        if (isSearchableSelect) {
-          this.inputEl.focus();
-        }
-        break;
-      default:
-        if (isSearchableSelect && event.key !== "Tab") {
-          this.inputEl.focus();
-        }
-        break;
+    }
+  };
+
+  private setMenuValue = (key: string, highlightedOptionIndex: number) => {
+    if (this.isSearchableSelect) {
+      if (key === "Enter") {
+        this.value = this.options[highlightedOptionIndex]?.value;
+      } else {
+        this.value = null;
+      }
     }
   };
 
@@ -282,6 +292,8 @@ export class Menu {
 
     const getOptionId = (index: number): string =>
       Array.from(this.host.querySelectorAll("li"))[index].id;
+
+    this.setMenuValue(event.key, highlightedOptionIndex);
 
     switch (event.key) {
       case "ArrowDown":
@@ -319,6 +331,22 @@ export class Menu {
         this.preventIncorrectTabOrder = false;
         this.focusFromSearchKeypress = false;
         break;
+      case "Home":
+        event.preventDefault();
+        this.arrowBehaviour(event);
+        this.setHighlightedOption(0);
+        this.menuOptionId.emit({
+          optionId: getOptionId(0),
+        });
+        break;
+      case "End":
+        event.preventDefault();
+        this.arrowBehaviour(event);
+        this.setHighlightedOption(this.options.length - 1);
+        this.menuOptionId.emit({
+          optionId: getOptionId(this.options.length - 1),
+        });
+        break;
       case "Enter":
         event.preventDefault();
         this.setInputValue(highlightedOptionIndex);
@@ -334,15 +362,21 @@ export class Menu {
       case "Backspace":
         if (this.isSearchBar) {
           (this.parentEl as HTMLIcSearchBarElement).setFocus();
-          this.focusFromSearchKeypress = true;
           this.setHighlightedOption(0);
+        } else if (this.isSearchableSelect) {
+          (this.parentEl as HTMLIcSelectElement).setFocus();
         }
+        this.focusFromSearchKeypress = true;
         break;
       default:
-        if (this.isSearchBar && event.key !== "Tab") {
-          (this.parentEl as HTMLIcSearchBarElement).setFocus();
+        if (event.key !== "Tab") {
+          if (this.isSearchBar) {
+            (this.parentEl as HTMLIcSearchBarElement).setFocus();
+            this.setHighlightedOption(0);
+          } else if (this.isSearchableSelect) {
+            (this.parentEl as HTMLIcSelectElement).setFocus();
+          }
           this.focusFromSearchKeypress = true;
-          this.setHighlightedOption(0);
         }
         break;
     }
@@ -383,6 +417,8 @@ export class Menu {
   private handleMenuKeyDown = (event: KeyboardEvent) => {
     if (this.activationType === "automatic") {
       this.autoSetValueOnMenuKeyDown(event);
+    } else {
+      this.manSetInputValueKeyboardOpen(event);
     }
   };
 
@@ -538,7 +574,7 @@ export class Menu {
 
   componentWillLoad(): void {
     this.loadUngroupedOptions();
-    this.isSearchBar = this.parentEl.tagName === "IC-SEARCH-BAR";
+    this.getParentEl(this.parentEl);
     this.parentEl.addEventListener("icClear", this.handleClearListener);
     this.parentEl.addEventListener("icSubmitSearch", this.handleSubmitSearch);
   }

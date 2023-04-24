@@ -19,8 +19,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -41,8 +40,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [];
           select.addEventListener("icChange", function (event) {
             console.log(event.detail.value);
@@ -74,7 +72,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
+          const select = document.querySelector("ic-select");
           select.value = "Cap";
           select.options = [
             { label: "Cappuccino", value: "Cap" },
@@ -99,8 +97,7 @@ import readme from "./readme.md";
           show-clear-button
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -121,8 +118,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             {
               label: "Cappuccino",
@@ -158,8 +154,7 @@ import readme from "./readme.md";
           helper-text="Some helper text"
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -183,8 +178,7 @@ import readme from "./readme.md";
           placeholder="Placeholder goes here"
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -205,8 +199,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?" small></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -230,8 +223,7 @@ import readme from "./readme.md";
           disabled
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -252,8 +244,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat", disabled: true },
@@ -277,8 +268,7 @@ import readme from "./readme.md";
           full-width="true"
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -302,8 +292,7 @@ import readme from "./readme.md";
           hide-label
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -327,8 +316,7 @@ import readme from "./readme.md";
           required
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -353,8 +341,7 @@ import readme from "./readme.md";
           value="Cap"
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -375,8 +362,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             {
               label: "Fancy",
@@ -408,8 +394,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cappuccino" },
             { label: "Flat white", value: "Flat white", recommended: true },
@@ -495,8 +480,7 @@ import readme from "./readme.md";
     {(args) =>
       html`<ic-select label="What is your favourite coffee?"></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -533,8 +517,7 @@ import readme from "./readme.md";
           <input type="reset" value="Reset" />
         </form>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -563,8 +546,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -592,8 +574,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [];
           select.addEventListener("icChange", function (event) {
             console.log(event.detail.value);
@@ -628,7 +609,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
+          const select = document.querySelector("ic-select");
           select.value = "Lat";
           select.options = [
             { label: "Cappuccino", value: "Cap" },
@@ -658,8 +639,7 @@ import readme from "./readme.md";
           search-match-position="start"
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -687,8 +667,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             {
               label: "Cappuccino",
@@ -746,8 +725,7 @@ import readme from "./readme.md";
           include-descriptions-in-search
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             {
               label: "Cappuccino",
@@ -805,8 +783,7 @@ import readme from "./readme.md";
           helper-text="Some helper text"
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -835,8 +812,7 @@ import readme from "./readme.md";
           small
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -865,8 +841,7 @@ import readme from "./readme.md";
           disabled
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -894,8 +869,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -924,8 +898,7 @@ import readme from "./readme.md";
           hide-label
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -954,8 +927,7 @@ import readme from "./readme.md";
           required
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -983,8 +955,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             {
               label: "Fancy",
@@ -1020,8 +991,7 @@ import readme from "./readme.md";
           include-group-titles-in-search
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             {
               label: "Fancy",
@@ -1056,8 +1026,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cappuccino" },
             { label: "Flat white", value: "Flat white", recommended: true },
@@ -1163,8 +1132,7 @@ import readme from "./readme.md";
           searchable
         ></ic-select>
         <script>
-          var select = document.querySelector("ic-select");
-          var option = "Cappuccino";
+          const select = document.querySelector("ic-select");
           select.options = [
             { label: "Cappuccino", value: "Cap" },
             { label: "Latte", value: "Lat" },
@@ -1275,7 +1243,7 @@ import readme from "./readme.md";
           <input type="reset" value="Reset" />
         </form>
         <script>
-          var select = document.querySelector("ic-select");
+          const select = document.querySelector("ic-select");
           select.value = "Cap";
           select.options = [
             { label: "Cappuccino", value: "Cap" },
@@ -1291,6 +1259,48 @@ import readme from "./readme.md";
           });
         </script>
       `
+    }
+  </Story>
+</Canvas>
+
+### Searchable - Update input value from external request
+
+<Canvas>
+  <Story
+    name="Searchable - Update input value from external request"
+    parameters={{ loki: { skip: true } }}
+  >
+    {(args) =>
+      html`<ic-section-container>
+          <ic-select
+            id="search-select"
+            searchable="true"
+            label="What is your favourite coffee? (searchable)"
+          ></ic-select>
+        </ic-section-container>
+        <script>
+          const searchSelect = document.getElementById("search-select");
+          let options = [];
+          options.push({ label: "unknown", value: "unknown" });
+          options.push({ label: "item 1", value: "item-1" });
+          options.push({ label: "item 2", value: "item-2" });
+          options.push({ label: "item 3", value: "item-3" });
+          searchSelect.options = options;
+          let searchoption = "";
+          searchSelect.addEventListener("icChange", function (event) {
+            console.log("icChange", event.detail.value);
+            searchoption = event.detail.value;
+            if (searchoption === "unknown") {
+              searchoption = "item-1";
+              searchSelect.value = "item-1";
+            } else {
+              searchSelect.value = searchoption;
+            }
+          });
+          searchSelect.addEventListener("icOptionSelect", function (event) {
+            console.log("icOptionSelect", event.detail.value);
+          });
+        </script>`
     }
   </Story>
 </Canvas>
