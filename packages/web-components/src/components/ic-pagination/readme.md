@@ -28,7 +28,24 @@
 | `icPageChange` | Emitted when a page is selected. | `CustomEvent<IcChangeEventDetail>` |
 
 
+## Methods
+
+### `setCurrentPage(page: number) => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
+
+### Used by
+
+ - [ic-pagination-bar](../ic-pagination-bar)
 
 ### Depends on
 
@@ -45,6 +62,7 @@ graph TD;
   ic-loading-indicator --> ic-typography
   ic-tooltip --> ic-typography
   ic-pagination-item --> ic-typography
+  ic-pagination-bar --> ic-pagination
   style ic-pagination fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

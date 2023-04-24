@@ -9,6 +9,7 @@ import {
   Watch,
   Event,
   EventEmitter,
+  Method,
 } from "@stencil/core";
 import paginationFirstLast from "../../assets/pagination-first-last.svg";
 import paginationNextPrevious from "../../assets/pagination-next-previous.svg";
@@ -84,11 +85,22 @@ export class Pagination {
     this.icPageChange.emit({ value: this.currentPage });
   }
 
+  @Method()
+  async setCurrentPage(page: number) {
+    this.currentPage = page;
+  }
+
   @Watch("currentPage")
   watchPageChangeHandler(): void {
     if (this.type === "simple") {
       return;
     }
+
+    this.startEllipsis = false;
+    this.endEllipsis = false;
+    this.startItems = [];
+    this.endItems = [];
+    this.midItems = [];
 
     const startItems = [];
     let startItemCount = 0;
@@ -178,6 +190,11 @@ export class Pagination {
     this.startItems = startItems;
     this.endItems = endItems;
     this.midItems = midItems;
+  }
+
+  @Watch("pages")
+  watchNumberPagesHandler(): void {
+    this.watchPageChangeHandler();
   }
 
   componentDidLoad(): void {

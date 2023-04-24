@@ -1,0 +1,300 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ic-pagination-bar should only allow a maximum of 4 custom items per page options 1`] = `
+<ic-pagination-bar show-items-per-page-control="true" total-items="150">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <div class="items-per-page-holder">
+          <ic-typography class="items-per-page-control-label pagination-text-default" variant="label">
+            Items per page
+          </ic-typography>
+          <ic-select class="items-per-page-input" hidelabel="" label="items-per-page-input" small="" value="25"></ic-select>
+        </div>
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 6
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="6" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should remove items per page options larger than the maximum number of items 1`] = `
+<ic-pagination-bar show-items-per-page-control="true" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <div class="items-per-page-holder">
+          <ic-typography class="items-per-page-control-label pagination-text-default" variant="label">
+            Items per page
+          </ic-typography>
+          <ic-select class="items-per-page-input" hidelabel="" label="items-per-page-input" small="" value="10"></ic-select>
+        </div>
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render 1`] = `
+<ic-pagination-bar total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with a custom item label 1`] = `
+<ic-pagination-bar item-label="Rows" pagination-type="data" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="item-pagination-label pagination-text-default" variant="label">
+          1 - 10 of 100 rowss
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with a custom page label 1`] = `
+<ic-pagination-bar page-label="Sheets" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Sheets 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with complex pagination controls 1`] = `
+<ic-pagination-bar pagination-controls="complex" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with custom items per page options 1`] = `
+<ic-pagination-bar show-items-per-page-control="true" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <div class="items-per-page-holder">
+          <ic-typography class="items-per-page-control-label pagination-text-default" variant="label">
+            Items per page
+          </ic-typography>
+          <ic-select class="items-per-page-input" hidelabel="" label="items-per-page-input" small="" value="10"></ic-select>
+        </div>
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with dark appearance 1`] = `
+<ic-pagination-bar apperance="dark" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with data pagination type 1`] = `
+<ic-pagination-bar pagination-type="data" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="item-pagination-label pagination-text-default" variant="label">
+          1 - 10 of 100 items
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with go to page controls 1`] = `
+<ic-pagination-bar show-go-to-page-control="true" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+        <div class="go-to-page-holder">
+          <ic-typography class="pagination-text-default" variant="label">
+            Go to page
+          </ic-typography>
+          <ic-text-field class="go-to-page-input" hidelabel="" label="go-to-page-input" small="" type="number"></ic-text-field>
+          <ic-button appearance="default" size="small" variant="secondary">
+            Go
+          </ic-button>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with items per page controls 1`] = `
+<ic-pagination-bar show-items-per-page-control="true" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <div class="items-per-page-holder">
+          <ic-typography class="items-per-page-control-label pagination-text-default" variant="label">
+            Items per page
+          </ic-typography>
+          <ic-select class="items-per-page-input" hidelabel="" label="items-per-page-input" small="" value="10"></ic-select>
+        </div>
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with left alignment 1`] = `
+<ic-pagination-bar alignment="left" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-left">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with light appearance 1`] = `
+<ic-pagination-bar appearance="light" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-right">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-light" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="light" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
+
+exports[`ic-pagination-bar should render with space between alignment 1`] = `
+<ic-pagination-bar alignment="space-between" total-items="100">
+  <mock:shadow-root>
+    <div class="pagination-bar pagination-bar-space-between">
+      <div class="item-controls">
+        <ic-typography class="page-pagination-label pagination-text-default" variant="label">
+          Page 1 of 10
+        </ic-typography>
+      </div>
+      <div class="pagination-controls">
+        <div class="pagination-holder">
+          <ic-pagination appearance="default" pages="10" type="simple"></ic-pagination>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</ic-pagination-bar>
+`;
