@@ -1,4 +1,4 @@
-import { Component, Prop, h, Element, Host } from "@stencil/core";
+import { Component, Prop, h, Element, Host, State } from "@stencil/core";
 
 import { IcTypographyVariants } from "../../utils/types";
 
@@ -20,8 +20,57 @@ export class Typography {
    */
   @Prop() applyVerticalMargins?: boolean = false;
 
+  /**
+   * The number of lines to display before truncating the text, only used for the 'body' variant.
+   */
+  @Prop() maxLines?: number;
+
+  @State() expanded: boolean = false;
+  @State() truncStyle: any;
+
+  componentWillLoad(): void {
+    this.maxLines > 0 && this.variant == "body"
+      ? (this.truncStyle = {
+          "max-height": this.boxHeight(this.maxLines),
+          overflow: "hidden",
+        })
+      : null;
+  }
+
+  private boxHeight = (lines: number): any => {
+    return (lines * 1.5).toString() + "rem";
+  };
+
+  private styleFunc = (expanded: boolean) => {
+    if (expanded == true) {
+      this.truncStyle = {
+        "max-height": "fit-content",
+      };
+      return this.truncStyle;
+    } else {
+      this.truncStyle = {
+        "max-height": this.boxHeight(this.maxLines),
+        overflow: "hidden",
+      };
+      return this.truncStyle;
+    }
+  };
+
+  private onClick = () => {
+    if (this.expanded === false) {
+      this.expanded = true;
+      this.styleFunc(this.expanded);
+      return;
+    } else {
+      this.expanded = false;
+      this.styleFunc(this.expanded);
+      return;
+    }
+  };
+
   render() {
-    const { variant, applyVerticalMargins } = this;
+    const { variant, applyVerticalMargins, maxLines, onClick, truncStyle } =
+      this;
 
     return (
       <Host
@@ -30,7 +79,18 @@ export class Typography {
           [`ic-typography-vertical-margins-${variant}`]: applyVerticalMargins,
         }}
       >
-        <slot />
+        {variant == "body" && maxLines > 0 ? (
+          <div style={truncStyle}>
+            <slot />
+          </div>
+        ) : (
+          <slot />
+        )}
+        {variant == "body" && maxLines > 0 && (
+          <button onClick={onClick} class="trunc-btn">
+            {this.expanded ? "See less" : "See more"}
+          </button>
+        )}
       </Host>
     );
   }
