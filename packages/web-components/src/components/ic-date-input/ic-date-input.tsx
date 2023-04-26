@@ -28,6 +28,8 @@ export class DateInput {
   private dayInputEl: HTMLInputElement;
   private monthInputEl: HTMLInputElement;
   private yearInputEl: HTMLInputElement;
+  
+  private inputElsInOrder: HTMLInputElement[] = [];
 
   private preventDayInput: boolean;
   private preventMonthInput: boolean;
@@ -78,15 +80,6 @@ export class DateInput {
 
   // FUNCTIONALITY FOR PASTING DATE INTO DATE INPUT?
 
-  // Prevent non-number characters normally allowed in <input type="number"> (e.g. full stop)
-  private onlyAllowNumbers = (event: KeyboardEvent) => {
-    const key = event.key;
-
-    if (key.length === 1 && !(key >= "0" && key <= "9")) {
-      event.preventDefault();
-    }
-  };
-
   private handleDayInput = (event: InputEvent) => {
     // Prevent auto-formatting each time a character is deleted
     if (event.inputType !== "deleteContentBackward") {
@@ -96,7 +89,7 @@ export class DateInput {
         +this.dayInputEl.value <= 9
       ) {
         this.dayInputEl.value = `0${event.data}`;
-        this.monthInputEl.focus();
+        this.moveToNextInput(this.dayInputEl);
         this.day = this.dayInputEl.value;
       }
 
@@ -104,7 +97,7 @@ export class DateInput {
         if (+this.dayInputEl.value === 0) {
           this.dayInputEl.value = "01";
         }
-        this.monthInputEl.focus();
+        this.moveToNextInput(this.dayInputEl)
         this.day = this.dayInputEl.value;
         this.preventDayInput = true;
       }
@@ -138,7 +131,7 @@ export class DateInput {
       this.dayInputEl.value.length === 1 &&
       (event.key === "/" || event.key === "-")
     ) {
-      this.monthInputEl.focus();
+      this.moveToNextInput(this.dayInputEl)
     }
 
     this.onlyAllowNumbers(event);
@@ -167,7 +160,7 @@ export class DateInput {
         +this.monthInputEl.value <= 9
       ) {
         this.monthInputEl.value = `0${event.data}`;
-        this.yearInputEl.focus();
+        this.moveToNextInput(this.monthInputEl);
         this.month = this.monthInputEl.value;
       }
 
@@ -175,7 +168,7 @@ export class DateInput {
         if (+this.monthInputEl.value === 0) {
           this.monthInputEl.value = "01";
         }
-        this.yearInputEl.focus();
+        this.moveToNextInput(this.monthInputEl);
         this.month = this.monthInputEl.value;
         this.preventMonthInput = true;
       }
@@ -209,7 +202,7 @@ export class DateInput {
       this.monthInputEl.value.length === 1 &&
       (event.key === "/" || event.key === "-")
     ) {
-      this.yearInputEl.focus();
+      this.moveToNextInput(this.monthInputEl);
     }
 
     this.onlyAllowNumbers(event);
@@ -232,6 +225,7 @@ export class DateInput {
   private handleYearInput = () => {
     if (this.yearInputEl.value.length === 4) {
       this.year = this.yearInputEl.value;
+      this.moveToNextInput(this.yearInputEl);
       this.preventYearInput = true;
     } else {
       this.year = null;
@@ -259,6 +253,7 @@ export class DateInput {
       } else if (this.yearInputEl.value.length === 3) {
         this.yearInputEl.value = `2${this.yearInputEl.value}`;
       }
+      this.moveToNextInput(this.yearInputEl);
     }
 
     this.onlyAllowNumbers(event);
@@ -278,6 +273,15 @@ export class DateInput {
 
   private handleYearFocus = () => {
     this.yearInputEl.select();
+  };
+
+  // Prevent non-number characters normally allowed in <input type="number"> (e.g. full stop)
+  private onlyAllowNumbers = (event: KeyboardEvent) => {
+    const key = event.key;
+
+    if (key.length === 1 && !(key >= "0" && key <= "9")) {
+      event.preventDefault();
+    }
   };
 
   private isSelectedDateDisabled = () => {
@@ -349,6 +353,107 @@ export class DateInput {
     }
   };
 
+  // private moveFocusFromDay = () => {
+
+  // }
+  // private setInputRef = (ref: HTMLInputElement, el: HTMLInputElement) => {
+  //   ref = el;
+  //   this.inputElRefsInOrder.push(ref);
+  // }
+
+  private getInputElFromDatePart = (datePart: string) => {
+    const commonAttrs = { title: "", type: "number" }
+
+    const dayInput = 
+      <input 
+        class="day-input"
+        ref={(el) => (this.dayInputEl = el)}
+        placeholder="DD"
+        min={1}
+        max={31}
+        onInput={this.handleDayInput}
+        onKeyDown={this.handleDayKeyDown}
+        onFocus={this.handleDayFocus}
+        onBlur={this.handleDayBlur}
+        { ...commonAttrs }
+      ></input>
+
+    const monthInput =
+      <input
+        class="month-input"
+        ref={(el) => (this.monthInputEl = el)}
+        placeholder="MM"
+        min={1}
+        max={12}
+        onInput={this.handleMonthInput}
+        onKeyDown={this.handleMonthKeyDown}
+        onFocus={this.handleMonthFocus}
+        onBlur={this.handleMonthBlur}
+        { ...commonAttrs }
+      ></input>
+
+    const yearInput = 
+      <input
+        class="year-input"
+        ref={(el) => (this.yearInputEl = el)}
+        placeholder="YYYY"
+        min={0}
+        max={9999}
+        onInput={this.handleYearInput}
+        onKeyDown={this.handleYearKeyDown}
+        onFocus={this.handleYearFocus}
+        onBlur={this.handleYearBlur}
+        { ...commonAttrs }
+      ></input>
+
+    let input;
+
+    switch (datePart) {
+      case "D":
+        input = dayInput;
+        break;
+      case "M":
+        input = monthInput;
+        break;
+      case "Y":
+        input = yearInput;
+        break;
+    }
+
+    return input;
+  }
+
+  private getInputElsInOrder = () => {
+    const dateParts = this.dateDisplayFormat.split("/");
+    
+    let inputElsInOrder: HTMLInputElement[] = [];
+    
+    dateParts.forEach(part => {
+      inputElsInOrder.push(this.getInputElFromDatePart(part.substring(0, 1)));
+    });
+
+    return inputElsInOrder;
+  }
+
+  private setInputElsInOrder = () => {
+    const inputs = this.el.shadowRoot.querySelectorAll("input");
+
+    inputs.forEach(input => this.inputElsInOrder.push(input));
+  }
+
+  // private getNextInput = (currentInput: HTMLInputElement) => {
+  //   const currentInputPos = this.inputElRefsInOrder.findIndex(ref => currentInput.value === currentInput)
+  //   // return 
+  // }
+
+  private moveToNextInput = (currentInput: HTMLInputElement) => {
+    const currentInputPos = this.inputElsInOrder.findIndex(input => input === currentInput);
+
+    if (this.inputElsInOrder[currentInputPos + 1]) {
+      this.inputElsInOrder[currentInputPos + 1].focus();
+    }
+  }
+
   componentWillLoad() {
     if (!this.helperText) {
       this.helperText = this.dateDisplayFormat;
@@ -359,6 +464,10 @@ export class DateInput {
     this.setValidationMessage();
   }
 
+  componentDidLoad() {
+    this.setInputElsInOrder();
+  }
+
   render() {
     const { label, helperText } = this;
 
@@ -366,47 +475,11 @@ export class DateInput {
       <ic-input-container>
         <ic-input-label label={label} helperText={helperText}></ic-input-label>
         <ic-input-component-container>
-          <input
-            class="day-input"
-            ref={(el) => (this.dayInputEl = el)}
-            title=""
-            type="number"
-            placeholder="DD"
-            min={1}
-            max={31}
-            onInput={this.handleDayInput}
-            onKeyDown={this.handleDayKeyDown}
-            onFocus={this.handleDayFocus}
-            onBlur={this.handleDayBlur}
-          ></input>
+          {this.getInputElsInOrder()[0]}
           /
-          <input
-            class="month-input"
-            ref={(el) => (this.monthInputEl = el)}
-            title=""
-            type="number"
-            placeholder="MM"
-            min={1}
-            max={12}
-            onInput={this.handleMonthInput}
-            onKeyDown={this.handleMonthKeyDown}
-            onFocus={this.handleMonthFocus}
-            onBlur={this.handleMonthBlur}
-          ></input>
+          {this.getInputElsInOrder()[1]}
           /
-          <input
-            class="year-input"
-            ref={(el) => (this.yearInputEl = el)}
-            title=""
-            type="number"
-            placeholder="YYYY"
-            min={0}
-            max={9999}
-            onInput={this.handleYearInput}
-            onKeyDown={this.handleYearKeyDown}
-            onFocus={this.handleYearFocus}
-            onBlur={this.handleYearBlur}
-          ></input>
+          {this.getInputElsInOrder()[2]}
         </ic-input-component-container>
         {(!isEmptyString(this.validationStatus) ||
           !isEmptyString(this.validationText)) && (
